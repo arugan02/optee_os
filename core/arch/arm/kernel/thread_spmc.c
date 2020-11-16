@@ -1394,6 +1394,17 @@ static TEE_Result spmc_init(void)
 	my_endpoint_id = spmc_get_id();
 	DMSG("My endpoint ID %#x", my_endpoint_id);
 
+	/* Enable managed exit interrupt for boot core. */
+	__asm__ volatile (
+		"mov x0, %0;"
+		"mov x1, %1;"
+		"mov x2, %2;"
+		"mov x3, %3;"
+		"hvc #0"
+		: : "i" (0xff03), "i" (4), "i" (1), "i" (1));
+
+	IMSG("%s enabled managed exit interrupt.", __func__);
+
 	return TEE_SUCCESS;
 }
 #endif /*CFG_CORE_SEL2_SPMC*/

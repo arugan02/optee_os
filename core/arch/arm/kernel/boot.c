@@ -1279,6 +1279,18 @@ static void init_secondary_helper(unsigned long nsec_entry)
 	init_vfp_sec();
 	init_vfp_nsec();
 
+	/* Enable managed exit interrupt for secondary core. */
+	__asm__ volatile (
+		"mov x0, %0;"
+		"mov x1, %1;"
+		"mov x2, %2;"
+		"mov x3, %3;"
+		"hvc #0"
+		: : "i" (0xff03), "i" (4), "i" (1), "i" (1));
+
+	IMSG("%s core %lu: enabled managed exit interrupt.",
+		__func__, get_core_pos());
+
 	IMSG("Secondary CPU %zu switching to normal world boot", get_core_pos());
 }
 

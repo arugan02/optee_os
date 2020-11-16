@@ -904,6 +904,14 @@ END_FUNC el0_sync_abort
 	bl	dcache_op_louis
 	ic	iallu
 #endif
+
+	/* HF_INTERRUPT_GET */
+	mov	x0, #0xff04
+	hvc	#0
+	/* Expect managed exit interrupt */
+	cmp	x0, #4
+	bne	.
+
 	/*
 	 * Mark current thread as suspended
 	 */
@@ -1021,8 +1029,9 @@ LOCAL_FUNC elx_irq , :
 #endif
 END_FUNC elx_irq
 
+#define HF_MANAGED_EXIT		1
 LOCAL_FUNC elx_fiq , :
-#if defined(CFG_ARM_GICV3)
+#if defined(CFG_ARM_GICV3) || defined (HF_MANAGED_EXIT)
 	foreign_intr_handler	fiq
 #else
 	native_intr_handler	fiq
