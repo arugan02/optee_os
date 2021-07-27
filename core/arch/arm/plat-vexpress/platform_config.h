@@ -14,7 +14,10 @@
 
 #if defined(PLATFORM_FLAVOR_fvp)
 
+#ifndef CFG_CORE_SEL2_SPMC
 #define GIC_BASE		0x2c000000
+#endif
+
 #define UART0_BASE		0x1c090000
 #define UART1_BASE		0x1c0a0000
 #define UART2_BASE		0x1c0b0000
@@ -24,7 +27,6 @@
 #define IT_UART1		38
 
 #define CONSOLE_UART_BASE	UART1_BASE
-#define IT_CONSOLE_UART		IT_UART1
 
 #elif defined(PLATFORM_FLAVOR_juno)
 
@@ -94,8 +96,10 @@
 #define TZCDRAM_BASE		0xff000000
 #define TZCDRAM_SIZE		0x01000000
 
+#ifndef CFG_CORE_SEL2_SPMC
 #define GICC_OFFSET		0x0
 #define GICD_OFFSET		0x3000000
+#endif
 
 #elif defined(PLATFORM_FLAVOR_juno)
 /*

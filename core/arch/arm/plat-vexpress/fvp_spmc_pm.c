@@ -20,8 +20,7 @@ void ffa_secondary_cpu_ep_register(vaddr_t secondary_ep)
 	 */
 	ret = thread_smc(FFA_SECONDARY_EP_REGISTER_64, secondary_ep, 0, 0);
 
-	if (ret != FFA_SUCCESS_64) {
+	if (ret != FFA_SUCCESS_32 && ret != FFA_SUCCESS_64) {
 		EMSG("FFA_SECONDARY_EP_REGISTER_64 ret %ld", ret);
-		panic();
 	}
 }

@@ -24,7 +24,10 @@
 #include <string.h>
 #include <trace.h>
 
+#ifndef CFG_CORE_SEL2_SPMC
 static struct gic_data gic_data __nex_bss;
+#endif
+
 static struct pl011_data console_data __nex_bss;
 
 register_phys_mem_pgdir(MEM_AREA_IO_SEC, CONSOLE_UART_BASE, PL011_REG_SIZE);
@@ -79,7 +82,11 @@ void main_secondary_init_gic(void)
 
 void itr_core_handler(void)
 {
+#ifdef CFG_CORE_SEL2_SPMC
+	panic("Secure interrupt handler not defined");
+#else
 	gic_it_handle(&gic_data);
+#endif
 }
 
 void console_init(void)

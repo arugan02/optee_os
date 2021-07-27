@@ -36,7 +36,14 @@ ifeq ($(platform-flavor-armv8),1)
 $(call force,CFG_WITH_ARM_TRUSTED_FW,y)
 endif
 
+ifeq ($(CFG_CORE_SEL2_SPMC),y)
+$(call force,CFG_GIC,n)
+$(call force,CFG_ARM_GICV3,n)
+else
 $(call force,CFG_GIC,y)
+$(call force,CFG_ARM_GICV3,y)
+endif
+
 $(call force,CFG_PL011,y)
 $(call force,CFG_SECURE_TIME_SOURCE_CNTPCT,y)
 
@@ -60,7 +67,7 @@ ifeq ($(PLATFORM_FLAVOR),fvp)
 CFG_TEE_CORE_NB_CORE = 8
 ifeq ($(CFG_CORE_SEL2_SPMC),y)
 CFG_TZDRAM_START ?= 0x06281000
-CFG_TZDRAM_SIZE  ?= 0x01D80000
+CFG_TZDRAM_SIZE  ?= 0x01d7f000
 else
 CFG_TZDRAM_START ?= 0x06000000
 CFG_TZDRAM_SIZE  ?= 0x02000000
